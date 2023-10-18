@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { buttonStyle, headerStyle } from "~/styles/generic";
+import { headerStyle } from "~/styles/generic";
 
 type Option = {
   value: string;
@@ -10,12 +10,15 @@ type Option = {
 type onSelect = (value: string) => void;
 
 type Props = {
+  initial: string;
   options: Option[];
   onSelect: onSelect;
 };
 
-const RadioButtons = ({ options, onSelect }: Props) => {
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+const RadioButtons = ({ initial, options, onSelect }: Props) => {
+  const [selectedOption, setSelectedOption] = useState<string | null>(
+    initial ?? null,
+  );
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
