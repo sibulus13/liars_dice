@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { SET_NAME } from "@/redux/reducers/profileSlice";
 import { SET_PLAYERCOUNT } from "@/redux/reducers/roomSlice";
@@ -53,9 +53,7 @@ export default function Home() {
       disabled: true,
     },
   ];
-  const Router = useRouter();
-  const { name } = useSelector((state) => state.profile);
-  const { playerCount } = useSelector((state) => state.room);
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -64,38 +62,42 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={mainStyle}>
-        <div className={containerStyle}>
+        <form className={containerStyle}>
           <p className={headerStyle}>Your name:</p>
-          <input className="" type="text" ref={inputName} />
+          <input
+            className=""
+            type="text"
+            ref={inputName}
+            required
+            onInvalid={(e) =>
+              e.target.setCustomValidity("Please enter your name")
+            }
+          />
           <p className={headerStyle}>How many players?</p>
           <RadioButtons
+            initial={"2"}
             options={twoToEight}
             onSelect={(value) => dispatch(SET_PLAYERCOUNT(value))}
           />
           <button
             className={buttonStyle}
-            onClick={() => {
-              handleSubmit();
-            }}
+            type="submit"
+            onClick={async (e) => await handleSubmit(e)}
           >
             Submit
           </button>
-          {/* For Verification */}
-          {/* <h1 className={headerStyle}>{name}</h1>
-          <h1 className={headerStyle}>{playerCount}</h1> */}
-        </div>
+        </form>
       </main>
     </>
   );
 
-  function handleSubmit() {
-    console.log("submitting");
+  async function handleSubmit(e) {
     // if name is empty, don't submit and warn user
-    if (!inputName.current.value || inputName.current.value === "") {
-      alert("Please enter a name");
+    if (!inputName.current?.value || inputName.current?.value === "") {
       return;
     }
+    e.preventDefault();
     dispatch(SET_NAME(inputName.current.value as string));
-    Router.push("/game");
+    await router.push("/game");
   }
 }
