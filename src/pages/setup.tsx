@@ -1,10 +1,15 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { SET_NAME } from "@/redux/reducers/profileSlice";
-import { SET_PLAYERCOUNT } from "@/redux/reducers/roomSlice";
+import {
+  SET_PLAYERCOUNT,
+  SET_PLAYERNAME,
+  SET_PLAYERNAMES,
+  SET_DICES,
+} from "@/redux/reducers/roomSlice";
+import { initializeDices, initializePlayerNames } from "~/helpers/game";
 import {
   buttonStyle,
   headerStyle,
@@ -12,47 +17,13 @@ import {
   containerStyle,
 } from "~/styles/generic";
 import RadioButtons from "~/components/generic/RadioButtons";
+import { randomNames, twoToEight } from "~/helpers/setup";
 
 export default function Home() {
+  const { playerCount } = useSelector((state) => state.room);
+
   const dispatch = useDispatch();
   const inputName = useRef(null);
-  const twoToEight = [
-    {
-      value: "2",
-      label: "2",
-      disabled: false,
-    },
-    {
-      value: "3",
-      label: "3",
-      disabled: false,
-    },
-    {
-      value: "4",
-      label: "4",
-      disabled: false,
-    },
-    {
-      value: "5",
-      label: "5",
-      disabled: false,
-    },
-    {
-      value: "6",
-      label: "6",
-      disabled: true,
-    },
-    {
-      value: "7",
-      label: "7",
-      disabled: true,
-    },
-    {
-      value: "8",
-      label: "8",
-      disabled: true,
-    },
-  ];
   const router = useRouter();
   return (
     <>
@@ -68,7 +39,7 @@ export default function Home() {
             className=""
             type="text"
             ref={inputName}
-            required
+            // required
             onInvalid={(e) =>
               e.target.setCustomValidity("Please enter your name")
             }
@@ -94,10 +65,26 @@ export default function Home() {
   async function handleSubmit(e) {
     // if name is empty, don't submit and warn user
     if (!inputName.current?.value || inputName.current?.value === "") {
-      return;
+      // return;
     }
     e.preventDefault();
-    dispatch(SET_NAME(inputName.current.value as string));
+    // randomly generate playerIndex as a number between 0 and playerCount - 1
+    const playerIndex: number = Math.floor(Math.random() * playerCount);
+    // randomly generate player names (array of length playerCount-1 filled with names) and add the user name to the playerIndex
+    const playerNames = initializePlayerNames(
+      playerCount as number,
+      inputName.current.value as string,
+      playerIndex,
+    );
+    const dices = initializeDices(playerCount as number);
+
+    dispatch(SET_PLAYERNAME(inputName.current.value as string));
+    dispatch(SET_PLAYERNAMES(playerNames));
+    dispatch(SET_DICES(dices));
+
+    console.log(playerNames);
+    console.log(dices, playerCount);
+
     await router.push("/game");
   }
 }
