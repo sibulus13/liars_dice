@@ -33,6 +33,8 @@ export default function Game() {
   // Keep track of who's turn it is
   const [turn, setTurn] = useState(0);
 
+  console.log(playerIndex);
+
   const inputs = [
     {
       label: "Bet",

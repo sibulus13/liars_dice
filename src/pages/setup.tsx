@@ -8,6 +8,7 @@ import {
   SET_PLAYERNAME,
   SET_PLAYERNAMES,
   SET_DICES,
+  SET_PLAYERINDEX,
 } from "@/redux/reducers/roomSlice";
 import { initializeDices, initializePlayerNames } from "~/helpers/game";
 import {
@@ -78,6 +79,7 @@ export default function Home() {
     );
     const dices = initializeDices(playerCount as number, 5);
 
+    dispatch(SET_PLAYERINDEX(playerIndex));
     dispatch(SET_PLAYERNAME(inputName.current.value as string));
     dispatch(SET_PLAYERNAMES(playerNames));
     dispatch(SET_DICES(dices));
