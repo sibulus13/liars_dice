@@ -4,7 +4,16 @@ type Dices = number[][];
 
 export function initializeDices(playerCount, numberOfRandomNumbers): Dices {
   // Use Array.from to create an array of playerCount rows
-  const dices = Array.from({ length: playerCount }, () => Array.from({length: numberOfRandomNumbers}, () => Math.floor(Math.random() * 6), // Generates random numbers between 0 and 99
+  const dices = Array.from({ length: playerCount }, () => Array.from({length: numberOfRandomNumbers}, () => Math.floor(Math.random() * 6),
+    ),
+  );
+
+  return dices;
+}
+
+export function initializeBets(playerCount): Dices {
+  // Use Array.from to create an array of playerCount rows
+  const dices = Array.from({ length: playerCount }, () => Array.from({length: 2}, () => 0,
     ),
   );
 

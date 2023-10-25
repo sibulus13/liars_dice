@@ -16,6 +16,7 @@ export default function Game() {
   let { playerCount } = useSelector((state) => state.room);
   let { playerIndex } = useSelector((state) => state.room);
   let { dices } = useSelector((state) => state.room);
+  let { bets } = useSelector((state) => state.room);
 
   // Generate random player names from a set list
 
@@ -24,16 +25,13 @@ export default function Game() {
     { label: "Bet", action: () => {} },
   ];
 
-  // randomly generate dice values for all players (array of length playerCount filled with 5x 1-6)
-  // Keep track of last round of bets
-  const [bets, setBets] = useState(Array(playerCount).fill([0, 0]));
   // player inputs
   const [dice, setDice] = useState(1);
   const [bet, setBet] = useState(1);
   // Keep track of who's turn it is
   const [turn, setTurn] = useState(0);
 
-  console.log(playerIndex);
+  // console.log(bets);
 
   const inputs = [
     {
@@ -65,6 +63,7 @@ export default function Game() {
           {/* For Verification */}
           {/* <h1 className={headerStyle}>{name}</h1>
           <h1 className={headerStyle}>{playerCount}</h1> */}
+
           {/* Dice container */}
           <div>
             {dices.map((player, index) => (
@@ -76,6 +75,13 @@ export default function Game() {
                       {index == playerIndex ? dice : "?"}
                     </p>
                   ))}
+                  {/* last bets */}
+                  <div className={headerStyle}>
+                    {bets[index][0] == 0 ? " " : bets[index][0]}
+                  </div>
+                  <div className={headerStyle}>
+                    {bets[index][1] == 0 ? " " : bets[index][1]}
+                  </div>
                 </div>
               </div>
             ))}
