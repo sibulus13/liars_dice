@@ -1,19 +1,13 @@
-import { SET_PLAYERCOUNT } from "@/redux/reducers/roomSlice";
-import { type } from "os";
 import { randomNames } from "./setup";
 
 type Dices = number[][];
 
-export function initializeDices(playerCount: number): Dices {
-  // initialize playerCount x 5 random numbers ranging from 1-6
-  let dices = [];
-  dices = Array(playerCount)
-    .fill(0)
-    .map(() =>
-      Array(5)
-        .fill(0)
-        .map(() => Math.floor(Math.random() * 6) + 1),
-    );
+export function initializeDices(playerCount, numberOfRandomNumbers): Dices {
+  // Use Array.from to create an array of playerCount rows
+  const dices = Array.from({ length: playerCount }, () => Array.from({length: numberOfRandomNumbers}, () => Math.floor(Math.random() * 6), // Generates random numbers between 0 and 99
+    ),
+  );
+
   return dices;
 }
 

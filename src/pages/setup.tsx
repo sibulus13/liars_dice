@@ -76,14 +76,14 @@ export default function Home() {
       inputName.current.value as string,
       playerIndex,
     );
-    const dices = initializeDices(playerCount as number);
+    const dices = initializeDices(playerCount as number, 5);
 
     dispatch(SET_PLAYERNAME(inputName.current.value as string));
     dispatch(SET_PLAYERNAMES(playerNames));
     dispatch(SET_DICES(dices));
 
-    console.log(playerNames);
-    console.log(dices, playerCount);
+    // console.log(playerNames);
+    // console.log(dices, playerCount);
 
     await router.push("/game");
   }
