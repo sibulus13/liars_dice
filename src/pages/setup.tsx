@@ -85,9 +85,6 @@ export default function Home() {
     dispatch(SET_PLAYERNAMES(playerNames));
     dispatch(SET_DICES(dices));
     dispatch(SET_BETS(initializeBets(playerCount)));
-    // console.log(playerNames);
-    // console.log(dices, playerCount);
-
     await router.push("/game");
   }
 }
